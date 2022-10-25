@@ -8,7 +8,6 @@ export default function Tasks({ todoLists, setTodoLists }) {
 
 	const [isEdit, setIsEdit] = useState(null);
 	const [editValue, setEditValue] = useState();
-	const [isCompleted, setIsCompleted] = useState(false);
 
 	function handleEdit(id) {
 		setIsEdit(id);
@@ -20,19 +19,18 @@ export default function Tasks({ todoLists, setTodoLists }) {
 		setEditValue(e.target.value);
 	}
 	function handleSave(id) {
-		const findList = todoLists.find((item) => item.id == id);
-		findList.todo = editValue;
-		setTodoLists((prev) => {
-			return [...prev, findList.todo];
-		});
+		const temp = [...todoLists];
+		const findTodo = temp.find((item) => item.id == id);
+		findTodo.todo = editValue;
 		setEditValue("");
 		setIsEdit(0);
 	}
 
 	function handleComplete(id) {
-		const findList = todoLists.find((item) => item.id == id);
-		setIsCompleted(!findList.isCompleted);
-		// setTodoLists([...todoLists, findList.isCompleted]);
+		const temp = [...todoLists];
+		const findList = temp.find((item) => item.id == id);
+		findList.isCompleted = !findList.isCompleted;
+		setTodoLists([...todoLists], findList.isCompleted);
 	}
 
 	return (
@@ -47,7 +45,7 @@ export default function Tasks({ todoLists, setTodoLists }) {
 									onClick={() => handleComplete(todoList.id)}
 								></input>
 
-								{isCompleted ? (
+								{todoList.isCompleted ? (
 									<s>{todoList.todo}</s>
 								) : (
 									<span>{todoList.todo}</span>

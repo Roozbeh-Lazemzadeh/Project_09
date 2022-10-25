@@ -8,16 +8,22 @@ export default function Input({ setTodoLists, todoLists }) {
 	}
 
 	function AddTodo(e) {
-		e.preventDefault();
-		const todoListObj = {
-			todo: todo,
-			id: Math.floor(Math.random() * 10000 + 1),
-			isCompleted: false,
-		};
-		setTodoLists((prev) => {
-			return [...prev, todoListObj];
-		});
-		setTodo("");
+		if (!todo) {
+			e.preventDefault();
+			alert("please fill the task!");
+			setTodoLists([...todoLists]);
+		} else {
+			e.preventDefault();
+			const todoListObj = {
+				todo: todo,
+				id: Math.floor(Math.random() * 10000 + 1),
+				isCompleted: false,
+			};
+			setTodoLists((prev) => {
+				return [...prev, todoListObj];
+			});
+			setTodo("");
+		}
 	}
 
 	return (

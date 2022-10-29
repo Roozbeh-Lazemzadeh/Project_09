@@ -4,6 +4,7 @@ export default function Tasks({ todoLists, setTodoLists }) {
 	function handleDelete(id) {
 		const newtodoLists = todoLists.filter((item) => item.id !== id);
 		setTodoLists(newtodoLists);
+		localStorage.setItem("todoItems", JSON.stringify(newtodoLists));
 	}
 
 	const [isEdit, setIsEdit] = useState(null);
@@ -22,6 +23,7 @@ export default function Tasks({ todoLists, setTodoLists }) {
 		const temp = [...todoLists];
 		const findTodo = temp.find((item) => item.id == id);
 		findTodo.todo = editValue;
+		localStorage.setItem("todoItems", JSON.stringify([...todoLists]));
 		setEditValue("");
 		setIsEdit(0);
 	}
@@ -31,31 +33,41 @@ export default function Tasks({ todoLists, setTodoLists }) {
 		const findList = temp.find((item) => item.id == id);
 		findList.isCompleted = !findList.isCompleted;
 		setTodoLists([...todoLists], findList.isCompleted);
+		localStorage.setItem(
+			"todoItems",
+			JSON.stringify([...todoLists], findList.isCompleted)
+		);
 	}
 
 	return (
 		<>
 			{todoLists.map((todoList) => {
 				return (
-					<>
-						<>
-							<div>
-								<input
-									type="checkbox"
-									onClick={() => handleComplete(todoList.id)}
-								></input>
+					<div className="li_holder" key={todoList.id}>
+						<div>
+							<div className="li_container">
+								<div>
+									<input
+										type="checkbox"
+										onClick={() => handleComplete(todoList.id)}
+									></input>
 
-								{todoList.isCompleted ? (
-									<s>{todoList.todo}</s>
-								) : (
-									<span>{todoList.todo}</span>
-								)}
-								<button onClick={() => handleDelete(todoList.id)}>
-									delete
-								</button>
-								<button onClick={() => handleEdit(todoList.id)}>Edit</button>
+									{todoList.isCompleted ? (
+										<s>{todoList.todo}</s>
+									) : (
+										<span>{todoList.todo}</span>
+									)}
+								</div>
+								<div className="buttons">
+									<button id="delete" onClick={() => handleDelete(todoList.id)}>
+										delete
+									</button>
+									<button id="Edit" onClick={() => handleEdit(todoList.id)}>
+										Edit
+									</button>
+								</div>
 							</div>
-						</>
+						</div>
 
 						{isEdit == todoList.id && (
 							<>
@@ -64,17 +76,19 @@ export default function Tasks({ todoLists, setTodoLists }) {
 									value={editValue ?? todoList.todo}
 									name={editValue ?? todoList.todo}
 									onChange={handleChange}
+									id="save_input"
 								/>
 								<button
 									onClick={() => {
 										handleSave(todoList.id);
 									}}
+									id="Save"
 								>
 									Save
 								</button>
 							</>
 						)}
-					</>
+					</div>
 				);
 			})}
 		</>

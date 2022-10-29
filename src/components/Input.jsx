@@ -8,12 +8,12 @@ export default function Input({ setTodoLists, todoLists }) {
 	}
 
 	function AddTodo(e) {
+		e.preventDefault();
 		if (!todo) {
-			e.preventDefault();
 			alert("please fill the task!");
 			setTodoLists([...todoLists]);
+			localStorage.setItem("todoItems", JSON.stringify([...todoLists]));
 		} else {
-			e.preventDefault();
 			const todoListObj = {
 				todo: todo,
 				id: Math.floor(Math.random() * 10000 + 1),
@@ -22,14 +22,31 @@ export default function Input({ setTodoLists, todoLists }) {
 			setTodoLists((prev) => {
 				return [...prev, todoListObj];
 			});
+			localStorage.setItem(
+				"todoItems",
+				JSON.stringify([...todoLists, todoListObj])
+			);
 			setTodo("");
 		}
 	}
 
 	return (
 		<form>
-			<input type="text" value={todo} name={todo} onChange={handleChange} />
-			<button onClick={AddTodo}>Add</button>
+			<h3>Awesome Todo List</h3>
+			<div className="container">
+				<input
+					className="prime_input"
+					type="text"
+					value={todo}
+					name={todo}
+					onChange={handleChange}
+					id="todo_title"
+					placeholder="What do you need to do today?"
+				/>
+				<button className="prime_button" onClick={AddTodo}>
+					Add
+				</button>
+			</div>
 		</form>
 	);
 }

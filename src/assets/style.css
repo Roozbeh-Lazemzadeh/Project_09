@@ -173,3 +173,6 @@ input[type="checkbox"] {
 	outline: none;
 	font-weight: 1.5rem;
 }
+.hidden {
+	display: none;
+}

@@ -44,7 +44,7 @@ export default function Tasks({ todoLists, setTodoLists }) {
 			{todoLists.map((todoList) => {
 				return (
 					<div className="li_holder" key={todoList.id}>
-						<div>
+						<div className={todoList.id == isEdit ? "hidden" : ""}>
 							<div className="li_container">
 								<div>
 									<input
